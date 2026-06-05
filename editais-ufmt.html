@@ -1,0 +1,467 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Editais Ufmt",
+  "schemaVersion": 1,
+  "description": "Relatório diário de editais de chamamento público do Governo Federal em que a UFMT é elegível para participar. Atualizado automaticamente todos os dias às 8h, com tabela filtrável por órgão e status, indicadores de urgência e links diretos para cada edital.",
+  "mcpTools": [],
+  "mcpServerNames": []
+}
+</script>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oportunidades: Editais de Chamamento Público</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/theme/mermaid.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/gridjs.umd.js" integrity="sha384-/XXDzxe4FsGiAe50i/u9pY/Vy/uX654MHB1xoc1BJNnH1WXHhqHga9g3q5tF4gj7" crossorigin="anonymous"></script>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8f9fb;
+    color: #1a1d23;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-left h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1a1d23;
+    margin-bottom: 4px;
+  }
+  .header-left p {
+    font-size: 0.82rem;
+    color: #6b7280;
+  }
+  .update-badge {
+    background: #eef2ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .filter-btn {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #d1d5db;
+    background: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: #374151;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .filter-btn.active { background: #1a1d23; color: white; border-color: #1a1d23; }
+  .filter-btn:hover:not(.active) { border-color: #9ca3af; background: #f3f4f6; }
+  .stats {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 18px;
+    flex: 1;
+    min-width: 130px;
+  }
+  .stat-card .value { font-size: 1.6rem; font-weight: 700; }
+  .stat-card .label { font-size: 0.75rem; color: #6b7280; margin-top: 2px; }
+  .stat-aberto .value { color: #059669; }
+  .stat-encerrado .value { color: #dc2626; }
+  .stat-total .value { color: #1a1d23; }
+  .alert-box {
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    color: #78350f;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .badge-aberto { background: #d1fae5; color: #065f46; }
+  .badge-encerrado { background: #fee2e2; color: #991b1b; }
+  .badge-urgente { background: #fef3c7; color: #92400e; }
+  .table-wrapper {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  .gridjs-wrapper { border: none !important; box-shadow: none !important; }
+  .gridjs-table { width: 100%; }
+  .gridjs-th { background: #f9fafb !important; font-size: 0.78rem !important; color: #374151 !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 0.05em; }
+  .gridjs-td { font-size: 0.82rem !important; vertical-align: top !important; padding: 10px 14px !important; }
+  .gridjs-tr:hover td { background: #f9fafb !important; }
+  .link-btn {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #1a1d23;
+    color: white !important;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .link-btn:hover { background: #374151; }
+  .footer-note {
+    margin-top: 16px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    .stats { flex-direction: column; }
+    .stat-card { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>📋 Oportunidades: Editais de Chamamento Público</h1>
+    <p>Editais do Governo Federal em que a UFMT, como universidade federal, é elegível para participar</p>
+  </div>
+  <div class="update-badge" id="update-badge">⏱ Atualizado em —</div>
+</div>
+
+<div class="alert-box" id="urgente-alert" style="display:none">
+  ⚠️ <strong>Atenção:</strong> Há editais com prazo encerrando nos próximos <strong>3 dias</strong>! Verifique a tabela abaixo.
+</div>
+
+<div class="stats">
+  <div class="stat-card stat-aberto"><div class="value" id="cnt-aberto">—</div><div class="label">Editais abertos</div></div>
+  <div class="stat-card stat-urgente" style="border-color:#fbbf24"><div class="value" style="color:#d97706" id="cnt-urgente">—</div><div class="label">Encerram em até 3 dias</div></div>
+  <div class="stat-card stat-encerrado"><div class="value" id="cnt-encerrado">—</div><div class="label">Encerrados recentemente</div></div>
+  <div class="stat-card stat-total"><div class="value" id="cnt-total">—</div><div class="label">Total monitorados</div></div>
+</div>
+
+<div class="table-wrapper">
+  <div id="table-container"></div>
+</div>
+
+<div class="footer-note">Atualizado automaticamente todos os dias às 08h00 · Fontes: CNPq, FINEP, MEC, CAPES, Transferegov</div>
+
+<script>
+const EDITAIS = [
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Cadeias Socioprodutivas da Agricultura Familiar e Sistemas Agroalimentares Sustentáveis para ICTs 2026 (AgriFam-ICT)",
+    elegibilidade: "ICTs públicas e privadas sem fins lucrativos como proponentes diretas — universidades federais elegíveis (UFMT pode submeter proposta institucional)",
+    criterios: "R$ 150M (FNDCT); projetos de R$ 3M a R$ 7M; 4 linhas: bioinsumos, produção agroecológica/orgânica, soluções digitais rurais, aquicultura de nativas; prazo prorrogado; submissão pela plataforma FINEP",
+    abertura: "31/03/2026",
+    encerramento: "26/06/2026",
+    link: "https://www.finep.gov.br/chamadas-publicas/chamadapublica/783"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Pop Ciência – Feiras de Ciências e Mostras Científicas (Chamada CNPq/MCTI/MEC Nº 09/2026)",
+    elegibilidade: "ICTs/IES públicas, incluindo universidades federais como proponentes (UFMT elegível)",
+    criterios: "R$ 30M; consolidação do ecossistema de feiras de ciências e mostras científicas; plano de ação com duas edições (2026 e 2027); submissão via Plataforma Carlos Chagas",
+    abertura: "Abr/2026",
+    encerramento: "19/06/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Pop Ciência – Apoio a Eventos da 23ª SNCT 2026 (Chamada CNPq/MCTI Nº 08/2026)",
+    elegibilidade: "ICTs/IES públicas e instituições proponentes de eventos de divulgação científica (UFMT elegível)",
+    criterios: "Apoio a eventos municipais, estaduais e intermunicipais sob o tema 'Ciência Delas'; ações entre 26/10 e 01/11/2026 (Semana Nacional de C&T)",
+    abertura: "Abr/2026",
+    encerramento: "03/07/2026",
+    link: "https://www.gov.br/cnpq/pt-br/assuntos/noticias/cnpq-em-acao/semana-nacional-de-ciencia-e-tecnologia-chamada-para-apoio-a-eventos-tem-inscricoes-abertas-ate-03-07"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "RENAMA e NAMs – Métodos Alternativos ao Uso de Animais (Chamada CNPq/MCTI Nº 11/2026)",
+    elegibilidade: "Pesquisadores vinculados a ICTs/Universidades federais (UFMT elegível como instituição de execução)",
+    criterios: "Fomento à Rede Nacional de Métodos Alternativos (RENAMA); apoio à transição de modelos animais para Novas Metodologias de Abordagem (NAMs); submissão via Plataforma Carlos Chagas",
+    abertura: "Mai/2026",
+    encerramento: "Em aberto (verificar CNPq)",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-11-2026/chamada-publica-cnpq-N-11-2026"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Programa PCI – Capacitação Institucional (Chamada MCTI/CNPq/FNDCT Nº 12/2026)",
+    elegibilidade: "Pesquisadores vinculados a ICTs (universidades elegíveis conforme regras do novo modelo PCI)",
+    criterios: "Bolsas de capacitação institucional para desenvolvimento de C,T&I; prazo de submissão prorrogado e termos alterados; verificar retificações no portal CNPq",
+    abertura: "25/03/2026",
+    encerramento: "27/06/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-12-2026/chamada-publica-cnpq-N-12-2026"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Apoio a Eventos de Empreendedorismo e Inovação (Chamada CNPq/SETEC/MCTI Nº 13/2026)",
+    elegibilidade: "ICTs/IES e instituições proponentes de eventos (UFMT elegível como proponente)",
+    criterios: "R$ 2,5M; eventos nacionais (até R$ 150 mil) e internacionais (até R$ 200 mil); 2 rodadas — 1ª: 29/04 a 28/05; 2ª: 25/05 a 31/08/2026",
+    abertura: "29/04/2026",
+    encerramento: "31/08/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-13-2026/chamada-publica-cnpq-N-13-2026"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Mais Inovação Brasil – Rodada 2: Tecnologias Digitais Avançadas",
+    elegibilidade: "Empresas com parceria obrigatória de ICT/Universidade (UFMT elegível como parceira institucional)",
+    criterios: "R$ 300M em subvenção; áreas: IA, computação quântica, semicondutores, fotônica, comunicações avançadas; parceria com ICT obrigatória no projeto",
+    abertura: "Abr/2026",
+    encerramento: "30/09/2026",
+    link: "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/noticias/2026/04/edital-de-r-300-milhoes-apoia-empresas-no-desenvolvimento-de-tecnologias-digitais-avancadas"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Mais Inovação Brasil – Saúde/ICTs (PD&I)",
+    elegibilidade: "ICTs/Universidades como proponentes em projetos de PD&I em saúde (UFMT elegível)",
+    criterios: "Recursos não-reembolsáveis para PD&I com risco tecnológico que ampliem o acesso da população à saúde; verificar faixas e cronograma no portal FINEP",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadapublica/730"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Transição Energética – Seleção Pública FINEP",
+    elegibilidade: "Empresas como proponentes; ICTs/Universidades como parceiras obrigatórias (UFMT elegível como parceira)",
+    criterios: "Subvenção econômica para PD&I com risco tecnológico; foco em energias renováveis, eficiência energética, H₂ verde e afins; parceria empresa + ICT obrigatória",
+    abertura: "03/03/2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadapublica/772"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Base Industrial de Defesa – Seleção Pública FINEP",
+    elegibilidade: "Empresas da BID com parceria de ICT/Universidade (UFMT elegível como parceira em PD&I de defesa)",
+    criterios: "Subvenção para desenvolvimento de produtos/processos inovadores; linhas: Tecnologias para Defesa Nacional e Sustentabilidade econômica da BID; integração ICT-empresa",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "https://www.finep.gov.br/chamadas-publicas/chamadapublica/775"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Cadeias Agroindustriais Sustentáveis – Seleção Pública FINEP",
+    elegibilidade: "Empresas como proponentes em rede, com parceria de ICT/Universidade (UFMT elegível como parceira)",
+    criterios: "Subvenção econômica para desenvolvimento de produtos/processos inovadores; estímulo a parcerias empresa–ICT em rede; verificar faixas e cronograma no portal FINEP",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "https://www.finep.gov.br/chamadas-publicas/chamadapublica/774"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CAPES",
+    titulo: "Prêmio CAPES de Tese 2026 (Edital nº 14/2026/CAPES)",
+    elegibilidade: "Programas de pós-graduação de universidades federais submetem suas melhores teses defendidas em 2025 (UFMT elegível)",
+    criterios: "Premiação das melhores teses por área de avaliação; submissão institucional pela PRPPG via portal CAPES; verificar cronograma e número de indicações por programa",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar CAPES)",
+    link: "https://www.gov.br/capes/pt-br/assuntos/editais-e-resultados-capes"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Programa de Iniciação ao Empreendedorismo – PIEMP (Chamada CNPq/MCTI/MEMP Nº 05/2026)",
+    elegibilidade: "ICTs com equipes de estudantes orientados por pesquisadores vinculados (UFMT elegível como ICT proponente)",
+    criterios: "Apoio a Programas de Iniciação ao Empreendedorismo; seleção de equipes de estudantes e desenvolvimento de projetos de negócio; resultado já publicado pelo CNPq",
+    abertura: "2026",
+    encerramento: "Encerrado (resultado divulgado)",
+    link: "http://resultado.cnpq.br/0634870311591204"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "PROSUL Pepe Mujica – Cooperação Latino-Americana e Caribenha (Chamada MCTI/CNPq Nº 02/2026)",
+    elegibilidade: "Pesquisadores vinculados a ICTs/universidades brasileiras em cooperação com a América Latina e Caribe (UFMT elegível)",
+    criterios: "Apoio a projetos conjuntos de cooperação em C,T&I com países da América Latina e Caribe; julgamento maio–junho/2026; submissão via Plataforma Carlos Chagas",
+    abertura: "29/01/2026",
+    encerramento: "30/04/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-02-2026/chamada-publica-mcti_cnpq-n-02_2026-prosul-pepe-mujica.pdf"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "MEC",
+    titulo: "Acelera NIT Brasil – 2º Ciclo (Edital nº 30/2026)",
+    elegibilidade: "Universidades federais com NIT constituído e vinculado à política de inovação",
+    criterios: "Até 12 NITs selecionados; 3 níveis de maturidade (nascente, intermediário, consolidado); R$ 2,2M total; contrapartida institucional obrigatória; fundação de apoio para gestão",
+    abertura: "05/05/2026",
+    encerramento: "29/05/2026",
+    link: "https://www.gov.br/mec/pt-br/acelera-nit-brasil/chamada-publica-do-projeto-acelera-nit-brasil"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Pesquisa Aplicada em Centros Temáticos 2026",
+    elegibilidade: "Centros Nacionais de Infraestrutura Científica e Tecnológica (universidades com centros de pesquisa estruturados)",
+    criterios: "Apoio a projetos de pesquisa aplicada; áreas: transição energética, ecológica, transformação digital, saúde e defesa; plataforma PAFIN",
+    abertura: "Mar/2026",
+    encerramento: "29/05/2026",
+    link: "http://www.finep.gov.br/noticias/todas-noticias/7094-finep-lanca-chamada-publica-para-apoiar-pesquisa-aplicada-em-centros-tematicos"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Cooperação CNPq-TUBITAK Nº 28/2025 – Brasil-Turquia",
+    elegibilidade: "Grupos de pesquisa de universidades brasileiras (pesquisadores com vínculo em ICT nacional)",
+    criterios: "Até 10 projetos bilaterais selecionados; áreas: meio ambiente, alimentos, saúde, TIC, física; parceria com grupo turco vinculado ao TUBITAK",
+    abertura: "30/12/2025",
+    encerramento: "04/05/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2025/chamada-no-28-2025/chamada-no-28-2025-apoio-a-projetos-de-cooperacao-cnpq-tubitak"
+  }
+];
+
+let currentFilter = 'todos';
+
+function isUrgente(ed) {
+  if (ed.status !== 'aberto') return false;
+  const enc = ed.encerramento;
+  if (enc.toLowerCase().includes('em aberto') || enc.toLowerCase().includes('verificar')) return false;
+  const parts = enc.split('/');
+  if (parts.length < 3) return false;
+  const d = new Date(parts[2], parseInt(parts[1])-1, parseInt(parts[0]));
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diff = (d - today) / 86400000;
+  return diff >= 0 && diff <= 3;
+}
+
+function applyFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderGrid();
+}
+
+function getFiltered() {
+  return EDITAIS.filter(e => {
+    if (currentFilter === 'todos') return true;
+    if (currentFilter === 'aberto') return e.status === 'aberto';
+    if (currentFilter === 'encerrado') return e.status === 'encerrado';
+    return e.orgao.toLowerCase() === currentFilter.toLowerCase();
+  });
+}
+
+function renderGrid() {
+  const data = getFiltered();
+  const container = document.getElementById('table-container');
+  container.innerHTML = '';
+
+  if (window._grid) {
+    window._grid.destroy();
+    window._grid = null;
+  }
+
+  window._grid = new gridjs.Grid({
+    columns: [
+      { name: 'Status', width: '90px' },
+      { name: 'Órgão', width: '70px' },
+      { name: 'Edital / Título', width: '220px' },
+      { name: 'Elegibilidade UFMT', width: '180px' },
+      { name: 'Critérios Principais', width: '200px' },
+      { name: 'Abertura', width: '80px' },
+      { name: 'Encerramento', width: '100px' },
+      { name: 'Acesso', width: '70px' }
+    ],
+    data: data.map(e => [
+      gridjs.html(e.status === 'aberto'
+        ? (isUrgente(e)
+            ? '<span class="badge badge-urgente">⚠ Urgente</span>'
+            : '<span class="badge badge-aberto">✓ Aberto</span>')
+        : '<span class="badge badge-encerrado">Encerrado</span>'),
+      e.orgao,
+      e.titulo,
+      e.elegibilidade,
+      e.criterios,
+      e.abertura,
+      e.encerramento,
+      gridjs.html(`<a href="${e.link}" target="_blank" class="link-btn">Acessar →</a>`)
+    ]),
+    sort: true,
+    resizable: true,
+    style: {
+      table: { 'border-collapse': 'collapse', width: '100%' },
+      th: { 'border-bottom': '2px solid #e5e7eb' },
+      td: { 'border-bottom': '1px solid #f3f4f6' }
+    }
+  }).render(container);
+}
+
+function updateStats() {
+  const hoje = new Date();
+  document.getElementById('update-badge').textContent =
+    '🕐 Atualizado em ' + hoje.toLocaleDateString('pt-BR') + ' às ' + hoje.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+  const abertos = EDITAIS.filter(e => e.status === 'aberto').length;
+  const urgentes = EDITAIS.filter(e => isUrgente(e)).length;
+  const encerrados = EDITAIS.filter(e => e.status === 'encerrado').length;
+
+  document.getElementById('cnt-aberto').textContent = abertos;
+  document.getElementById('cnt-urgente').textContent = urgentes;
+  document.getElementById('cnt-encerrado').textContent = encerrados;
+  document.getElementById('cnt-total').textContent = EDITAIS.length;
+
+  if (urgentes > 0) document.getElementById('urgente-alert').style.display = 'flex';
+}
+
+updateStats();
+renderGrid();
+</script>
+</body>
+</html>
