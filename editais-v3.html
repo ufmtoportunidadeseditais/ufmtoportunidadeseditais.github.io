@@ -1,0 +1,581 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Editais Ufmt",
+  "schemaVersion": 1,
+  "description": "Relatório diário de editais de chamamento público do Governo Federal em que a UFMT é elegível para participar. Atualizado automaticamente todos os dias às 8h, com tabela filtrável por órgão e status, indicadores de urgência e links diretos para cada edital.",
+  "mcpTools": [],
+  "mcpServerNames": []
+}
+</script>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oportunidades: Editais de Chamamento Público</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/theme/mermaid.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/gridjs.umd.js" integrity="sha384-/XXDzxe4FsGiAe50i/u9pY/Vy/uX654MHB1xoc1BJNnH1WXHhqHga9g3q5tF4gj7" crossorigin="anonymous"></script>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8f9fb;
+    color: #1a1d23;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-left h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1a1d23;
+    margin-bottom: 4px;
+  }
+  .header-left p {
+    font-size: 0.82rem;
+    color: #6b7280;
+  }
+  .update-badge {
+    background: #eef2ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .filter-btn {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #d1d5db;
+    background: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: #374151;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .filter-btn.active { background: #1a1d23; color: white; border-color: #1a1d23; }
+  .filter-btn:hover:not(.active) { border-color: #9ca3af; background: #f3f4f6; }
+  .stats {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 18px;
+    flex: 1;
+    min-width: 130px;
+  }
+  .stat-card .value { font-size: 1.6rem; font-weight: 700; }
+  .stat-card .label { font-size: 0.75rem; color: #6b7280; margin-top: 2px; }
+  .stat-aberto .value { color: #059669; }
+  .stat-encerrado .value { color: #dc2626; }
+  .stat-total .value { color: #1a1d23; }
+  .alert-box {
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    color: #78350f;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .badge-aberto { background: #d1fae5; color: #065f46; }
+  .badge-encerrado { background: #fee2e2; color: #991b1b; }
+  .badge-urgente { background: #fef3c7; color: #92400e; }
+  .table-wrapper {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  .gridjs-wrapper { border: none !important; box-shadow: none !important; }
+  .gridjs-table { width: 100%; }
+  .gridjs-th { background: #f9fafb !important; font-size: 0.78rem !important; color: #374151 !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 0.05em; }
+  .gridjs-td { font-size: 0.82rem !important; vertical-align: top !important; padding: 10px 14px !important; }
+  .gridjs-tr:hover td { background: #f9fafb !important; }
+  .link-btn {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #1a1d23;
+    color: white !important;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .link-btn:hover { background: #374151; }
+  .footer-note {
+    margin-top: 16px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    .stats { flex-direction: column; }
+    .stat-card { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left" style="display:flex;align-items:center;gap:14px;">
+    <img src="data:image/png;base64,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" alt="Codex" style="height:52px;width:auto;flex:none;">
+    <div>
+      <h1>📋 Oportunidades: Editais de Chamamento Público</h1>
+      <p>Editais em que a UFMT, como universidade federal, é elegível para participar</p>
+      <p style="margin-top:3px;">Página criada para auxiliar extensionistas e pesquisadores por meio da curadoria de editais abertos.</p>
+    </div>
+  </div>
+  <div class="update-badge" id="update-badge">⏱ Atualizado em —</div>
+</div>
+
+<div class="alert-box" id="urgente-alert" style="display:none">
+  ⚠️ <strong>Atenção:</strong> Há editais com prazo encerrando nos próximos <strong>3 dias</strong>! Verifique a tabela abaixo.
+</div>
+
+<div class="stats">
+  <div class="stat-card stat-aberto"><div class="value" id="cnt-aberto">—</div><div class="label">Editais abertos</div></div>
+  <div class="stat-card stat-urgente" style="border-color:#fbbf24"><div class="value" style="color:#d97706" id="cnt-urgente">—</div><div class="label">Encerram em até 3 dias</div></div>
+  <div class="stat-card stat-encerrado"><div class="value" id="cnt-encerrado">—</div><div class="label">Encerrados recentemente</div></div>
+  <div class="stat-card stat-total"><div class="value" id="cnt-total">—</div><div class="label">Total monitorados</div></div>
+</div>
+
+<div class="table-wrapper">
+  <div id="table-container"></div>
+</div>
+
+<div class="footer-note">Atualizado automaticamente todos os dias às 08h00 · Fontes: CNPq, FINEP, MEC, CAPES, Transferegov</div>
+
+<script>
+const EDITAIS = [
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Cadeias Socioprodutivas da Agricultura Familiar e Sistemas Agroalimentares Sustentáveis para ICTs 2026 (AgriFam-ICT)",
+    elegibilidade: "ICTs públicas e privadas sem fins lucrativos como proponentes diretas — universidades federais elegíveis (UFMT pode submeter proposta institucional)",
+    criterios: "R$ 150M (FNDCT); projetos de R$ 3M a R$ 7M; 4 linhas: bioinsumos, produção agroecológica/orgânica, soluções digitais rurais, aquicultura de nativas; prazo prorrogado; submissão pela plataforma FINEP",
+    abertura: "31/03/2026",
+    encerramento: "26/06/2026",
+    link: "https://www.finep.gov.br/chamadas-publicas/chamadapublica/783"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Pop Ciência – Feiras de Ciências e Mostras Científicas (Chamada CNPq/MCTI/MEC Nº 09/2026)",
+    elegibilidade: "ICTs/IES públicas, incluindo universidades federais como proponentes (UFMT elegível)",
+    criterios: "R$ 30M; consolidação do ecossistema de feiras de ciências e mostras científicas; plano de ação com duas edições (2026 e 2027); submissão via Plataforma Carlos Chagas",
+    abertura: "Abr/2026",
+    encerramento: "19/06/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Pop Ciência – Apoio a Eventos da 23ª SNCT 2026 (Chamada CNPq/MCTI Nº 08/2026)",
+    elegibilidade: "ICTs/IES públicas e instituições proponentes de eventos de divulgação científica (UFMT elegível)",
+    criterios: "Apoio a eventos municipais, estaduais e intermunicipais sob o tema 'Ciência Delas'; ações entre 26/10 e 01/11/2026 (Semana Nacional de C&T)",
+    abertura: "Abr/2026",
+    encerramento: "03/07/2026",
+    link: "https://www.gov.br/cnpq/pt-br/assuntos/noticias/cnpq-em-acao/semana-nacional-de-ciencia-e-tecnologia-chamada-para-apoio-a-eventos-tem-inscricoes-abertas-ate-03-07"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "RENAMA e NAMs – Métodos Alternativos ao Uso de Animais (Chamada CNPq/MCTI Nº 11/2026)",
+    elegibilidade: "Pesquisadores vinculados a ICTs/Universidades federais (UFMT elegível como instituição de execução)",
+    criterios: "Fomento à Rede Nacional de Métodos Alternativos (RENAMA); apoio à transição de modelos animais para Novas Metodologias de Abordagem (NAMs); submissão via Plataforma Carlos Chagas",
+    abertura: "Mai/2026",
+    encerramento: "Em aberto (verificar CNPq)",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-11-2026/chamada-publica-cnpq-N-11-2026"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Programa PCI – Capacitação Institucional (Chamada MCTI/CNPq/FNDCT Nº 12/2026)",
+    elegibilidade: "Pesquisadores vinculados a ICTs (universidades elegíveis conforme regras do novo modelo PCI)",
+    criterios: "Bolsas de capacitação institucional para desenvolvimento de C,T&I; prazo de submissão prorrogado e termos alterados; verificar retificações no portal CNPq",
+    abertura: "25/03/2026",
+    encerramento: "27/06/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-12-2026/chamada-publica-cnpq-N-12-2026"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Apoio a Eventos de Empreendedorismo e Inovação (Chamada CNPq/SETEC/MCTI Nº 13/2026)",
+    elegibilidade: "ICTs/IES e instituições proponentes de eventos (UFMT elegível como proponente)",
+    criterios: "R$ 2,5M; eventos nacionais (até R$ 150 mil) e internacionais (até R$ 200 mil); 2 rodadas — 1ª: 29/04 a 28/05; 2ª: 25/05 a 31/08/2026",
+    abertura: "29/04/2026",
+    encerramento: "31/08/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-13-2026/chamada-publica-cnpq-N-13-2026"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Mais Inovação Brasil – Rodada 2: Tecnologias Digitais Avançadas",
+    elegibilidade: "Empresas com parceria obrigatória de ICT/Universidade (UFMT elegível como parceira institucional)",
+    criterios: "R$ 300M em subvenção; áreas: IA, computação quântica, semicondutores, fotônica, comunicações avançadas; parceria com ICT obrigatória no projeto",
+    abertura: "Abr/2026",
+    encerramento: "30/09/2026",
+    link: "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/noticias/2026/04/edital-de-r-300-milhoes-apoia-empresas-no-desenvolvimento-de-tecnologias-digitais-avancadas"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Mais Inovação Brasil – Saúde/ICTs (PD&I)",
+    elegibilidade: "ICTs/Universidades como proponentes em projetos de PD&I em saúde (UFMT elegível)",
+    criterios: "Recursos não-reembolsáveis para PD&I com risco tecnológico que ampliem o acesso da população à saúde; verificar faixas e cronograma no portal FINEP",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadapublica/730"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Transição Energética – Seleção Pública FINEP",
+    elegibilidade: "Empresas como proponentes; ICTs/Universidades como parceiras obrigatórias (UFMT elegível como parceira)",
+    criterios: "Subvenção econômica para PD&I com risco tecnológico; foco em energias renováveis, eficiência energética, H₂ verde e afins; parceria empresa + ICT obrigatória",
+    abertura: "03/03/2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadapublica/772"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Base Industrial de Defesa – Seleção Pública FINEP",
+    elegibilidade: "Empresas da BID com parceria de ICT/Universidade (UFMT elegível como parceira em PD&I de defesa)",
+    criterios: "Subvenção para desenvolvimento de produtos/processos inovadores; linhas: Tecnologias para Defesa Nacional e Sustentabilidade econômica da BID; integração ICT-empresa",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "https://www.finep.gov.br/chamadas-publicas/chamadapublica/775"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Cadeias Agroindustriais Sustentáveis – Seleção Pública FINEP",
+    elegibilidade: "Empresas como proponentes em rede, com parceria de ICT/Universidade (UFMT elegível como parceira)",
+    criterios: "Subvenção econômica para desenvolvimento de produtos/processos inovadores; estímulo a parcerias empresa–ICT em rede; verificar faixas e cronograma no portal FINEP",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "https://www.finep.gov.br/chamadas-publicas/chamadapublica/774"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CAPES",
+    titulo: "Prêmio CAPES de Tese 2026 (Edital nº 14/2026/CAPES)",
+    elegibilidade: "Programas de pós-graduação de universidades federais submetem suas melhores teses defendidas em 2025 (UFMT elegível)",
+    criterios: "Premiação das melhores teses por área de avaliação; submissão institucional pela PRPPG via portal CAPES; verificar cronograma e número de indicações por programa",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar CAPES)",
+    link: "https://www.gov.br/capes/pt-br/assuntos/editais-e-resultados-capes"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Brics-STI – Projetos Internacionais de Pesquisa (Chamada MCTI/CNPq 2026)",
+    elegibilidade: "Pesquisadores doutores vinculados a ICTs brasileiras em consórcios com países do BRICS (UFMT elegível como instituição de execução)",
+    criterios: "R$ 33M (FNDCT); Redes Temáticas (até R$ 650 mil) e Projetos Flagship (até R$ 5,5M); áreas: recursos hídricos, IA, energia, saúde, biotecnologia, H₂ verde; pré-proposta internacional (JAF) até 16/06",
+    abertura: "Mai/2026",
+    encerramento: "06/07/2026",
+    link: "https://www.gov.br/cnpq/pt-br/assuntos/noticias/cnpq-em-acao/chamada-brics-sti-inscricoes-abertas"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "ProÁfrica 2026 – Cooperação Científica Brasil-África",
+    elegibilidade: "Equipes coordenadas por pesquisador doutor com vínculo institucional (UFMT elegível como instituição de execução)",
+    criterios: "R$ 25M (FNDCT); Redes Temáticas Consolidadas (até R$ 1M) e Emergentes/Bilaterais (até R$ 400 mil); temas: doenças tropicais, mudanças climáticas, IA; submissão via Plataforma Carlos Chagas",
+    abertura: "Mai/2026",
+    encerramento: "31/08/2026",
+    link: "https://www.gov.br/cnpq/pt-br/assuntos/noticias/cnpq-em-acao/chamada-proafrica-2026-propostas-podem-ser-enviadas-ate-31-08"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CAPES",
+    titulo: "Programa CAPES-AUGM (Edital nº 17/2026)",
+    elegibilidade: "IES brasileiras em parceria com universidades membros da AUGM (UFMT elegível como proponente)",
+    criterios: "Até 15 projetos conjuntos por chamada; fomento a pesquisa e mobilidade acadêmica entre IES brasileiras e da AUGM; submissão institucional via CAPES",
+    abertura: "2026",
+    encerramento: "02/07/2026",
+    link: "https://www.gov.br/capes/pt-br/assuntos/editais-e-resultados-capes"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CAPES",
+    titulo: "Programa Cátedra Tübingen – Geociências Terrestres (CAPES)",
+    elegibilidade: "Programas de pós-graduação/pesquisadores de universidades brasileiras (UFMT elegível)",
+    criterios: "Apoio a propostas sobre processos do sistema terrestre em múltiplas escalas; cooperação com a Universidade de Tübingen; submissão via SICAPES",
+    abertura: "2026",
+    encerramento: "30/06/2026",
+    link: "https://www.gov.br/capes/pt-br/assuntos/editais-e-resultados-capes"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Mais Inovação Brasil – Chamada Regional (subvenção)",
+    elegibilidade: "Empresas das regiões prioritárias com parceria de ICT/Universidade (UFMT elegível como parceira; foco regional favorece o Centro-Oeste)",
+    criterios: "R$ 300M em subvenção econômica para PD&I com risco tecnológico; estímulo à integração ICT-empresa em projetos regionais; verificar prazos no portal FINEP",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Mais Inovação Brasil – Economia Circular e Cidades Sustentáveis",
+    elegibilidade: "Empresas com parceria de ICT/Universidade (UFMT elegível como parceira institucional)",
+    criterios: "Subvenção econômica (programa Mais Inovação Brasil, R$ 3,3 bi no total); foco em economia circular e soluções para cidades sustentáveis; verificar faixas e prazos no portal FINEP",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FAPEMAT",
+    titulo: "PPSUS – Programa Pesquisa para o SUS (FAPEMAT / Decit-MS / SES-MT)",
+    elegibilidade: "Pesquisadores doutores em exercício em instituições de ensino/pesquisa de Mato Grosso (UFMT elegível como instituição executora)",
+    criterios: "Fomento a projetos de pesquisa em saúde alinhados às prioridades do SUS em MT; parceria FAPEMAT, Ministério da Saúde (Decit) e SES-MT; submissão pelo portal FAPEMAT",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FAPEMAT)",
+    link: "https://www.fapemat.mt.gov.br/"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP/Petrobras",
+    titulo: "Ecossistema Tecnológico de Biorrefino – Conexões para Inovação (FINEP/Petrobras 2026)",
+    elegibilidade: "ICTs como proponentes de propostas institucionais (UFMT elegível)",
+    criterios: "Apoio a projetos que desenvolvam eixos tecnológicos da cadeia de biorrefino; foco em bioeconomia, transição energética, diversificação de matérias-primas e redução da intensidade de carbono",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar FINEP)",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "BNDES/FINEP",
+    titulo: "Centros de Pesquisa, Desenvolvimento Tecnológico e Inovação (Chamada BNDES/FINEP)",
+    elegibilidade: "Instituições que atraiam, implantem ou expandam Centros de PD&I (UFMT elegível como sede/parceira institucional)",
+    criterios: "Necessidade de crédito acima de R$ 10M (Norte/Nordeste) ou R$ 20M (demais regiões); apoio à instalação e expansão de centros de PD&I no País",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar BNDES)",
+    link: "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/inovacao/chamada-publica-para-selecao-de-propostas-centros-de-pesquisa-desenvolvimento-tecnologico-e-inovacao"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "Petrobras",
+    titulo: "Petrobras Socioambiental – Patrocínio a Projetos Ambientais e Sociais",
+    elegibilidade: "Instituições proponentes de projetos socioambientais, incluindo universidades públicas (UFMT elegível)",
+    criterios: "Seleção pública para patrocínio a projetos ambientais e sociais; verificar linhas temáticas, valores e prazos no portal Petrobras",
+    abertura: "2026",
+    encerramento: "Em aberto (verificar Petrobras)",
+    link: "https://petrobras.com.br/quem-somos/patrocinios"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Programa de Iniciação ao Empreendedorismo – PIEMP (Chamada CNPq/MCTI/MEMP Nº 05/2026)",
+    elegibilidade: "ICTs com equipes de estudantes orientados por pesquisadores vinculados (UFMT elegível como ICT proponente)",
+    criterios: "Apoio a Programas de Iniciação ao Empreendedorismo; seleção de equipes de estudantes e desenvolvimento de projetos de negócio; resultado já publicado pelo CNPq",
+    abertura: "2026",
+    encerramento: "Encerrado (resultado divulgado)",
+    link: "http://resultado.cnpq.br/0634870311591204"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "PROSUL Pepe Mujica – Cooperação Latino-Americana e Caribenha (Chamada MCTI/CNPq Nº 02/2026)",
+    elegibilidade: "Pesquisadores vinculados a ICTs/universidades brasileiras em cooperação com a América Latina e Caribe (UFMT elegível)",
+    criterios: "Apoio a projetos conjuntos de cooperação em C,T&I com países da América Latina e Caribe; julgamento maio–junho/2026; submissão via Plataforma Carlos Chagas",
+    abertura: "29/01/2026",
+    encerramento: "30/04/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-02-2026/chamada-publica-mcti_cnpq-n-02_2026-prosul-pepe-mujica.pdf"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "MEC",
+    titulo: "Acelera NIT Brasil – 2º Ciclo (Edital nº 30/2026)",
+    elegibilidade: "Universidades federais com NIT constituído e vinculado à política de inovação",
+    criterios: "Até 12 NITs selecionados; 3 níveis de maturidade (nascente, intermediário, consolidado); R$ 2,2M total; contrapartida institucional obrigatória; fundação de apoio para gestão",
+    abertura: "05/05/2026",
+    encerramento: "29/05/2026",
+    link: "https://www.gov.br/mec/pt-br/acelera-nit-brasil/chamada-publica-do-projeto-acelera-nit-brasil"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Pesquisa Aplicada em Centros Temáticos 2026",
+    elegibilidade: "Centros Nacionais de Infraestrutura Científica e Tecnológica (universidades com centros de pesquisa estruturados)",
+    criterios: "Apoio a projetos de pesquisa aplicada; áreas: transição energética, ecológica, transformação digital, saúde e defesa; plataforma PAFIN",
+    abertura: "Mar/2026",
+    encerramento: "29/05/2026",
+    link: "http://www.finep.gov.br/noticias/todas-noticias/7094-finep-lanca-chamada-publica-para-apoiar-pesquisa-aplicada-em-centros-tematicos"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "CNPq",
+    titulo: "Cooperação CNPq-TUBITAK Nº 28/2025 – Brasil-Turquia",
+    elegibilidade: "Grupos de pesquisa de universidades brasileiras (pesquisadores com vínculo em ICT nacional)",
+    criterios: "Até 10 projetos bilaterais selecionados; áreas: meio ambiente, alimentos, saúde, TIC, física; parceria com grupo turco vinculado ao TUBITAK",
+    abertura: "30/12/2025",
+    encerramento: "04/05/2026",
+    link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2025/chamada-no-28-2025/chamada-no-28-2025-apoio-a-projetos-de-cooperacao-cnpq-tubitak"
+  }
+];
+
+let currentFilter = 'todos';
+
+function isUrgente(ed) {
+  if (ed.status !== 'aberto') return false;
+  const enc = ed.encerramento;
+  if (enc.toLowerCase().includes('em aberto') || enc.toLowerCase().includes('verificar')) return false;
+  const parts = enc.split('/');
+  if (parts.length < 3) return false;
+  const d = new Date(parts[2], parseInt(parts[1])-1, parseInt(parts[0]));
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diff = (d - today) / 86400000;
+  return diff >= 0 && diff <= 3;
+}
+
+function applyFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderGrid();
+}
+
+function getFiltered() {
+  return EDITAIS.filter(e => {
+    if (currentFilter === 'todos') return true;
+    if (currentFilter === 'aberto') return e.status === 'aberto';
+    if (currentFilter === 'encerrado') return e.status === 'encerrado';
+    return e.orgao.toLowerCase() === currentFilter.toLowerCase();
+  });
+}
+
+function renderGrid() {
+  const data = getFiltered();
+  const container = document.getElementById('table-container');
+  container.innerHTML = '';
+
+  if (window._grid) {
+    window._grid.destroy();
+    window._grid = null;
+  }
+
+  window._grid = new gridjs.Grid({
+    columns: [
+      { name: 'Status', width: '90px' },
+      { name: 'Órgão', width: '70px' },
+      { name: 'Edital / Título', width: '220px' },
+      { name: 'Elegibilidade UFMT', width: '180px' },
+      { name: 'Critérios Principais', width: '200px' },
+      { name: 'Abertura', width: '80px' },
+      { name: 'Encerramento', width: '100px' },
+      { name: 'Acesso', width: '70px' }
+    ],
+    data: data.map(e => [
+      gridjs.html(e.status === 'aberto'
+        ? (isUrgente(e)
+            ? '<span class="badge badge-urgente">⚠ Urgente</span>'
+            : '<span class="badge badge-aberto">✓ Aberto</span>')
+        : '<span class="badge badge-encerrado">Encerrado</span>'),
+      e.orgao,
+      e.titulo,
+      e.elegibilidade,
+      e.criterios,
+      e.abertura,
+      e.encerramento,
+      gridjs.html(`<a href="${e.link}" target="_blank" class="link-btn">Acessar →</a>`)
+    ]),
+    sort: true,
+    resizable: true,
+    style: {
+      table: { 'border-collapse': 'collapse', width: '100%' },
+      th: { 'border-bottom': '2px solid #e5e7eb' },
+      td: { 'border-bottom': '1px solid #f3f4f6' }
+    }
+  }).render(container);
+}
+
+function updateStats() {
+  const hoje = new Date();
+  document.getElementById('update-badge').textContent =
+    '🕐 Atualizado em ' + hoje.toLocaleDateString('pt-BR') + ' às ' + hoje.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+  const abertos = EDITAIS.filter(e => e.status === 'aberto').length;
+  const urgentes = EDITAIS.filter(e => isUrgente(e)).length;
+  const encerrados = EDITAIS.filter(e => e.status === 'encerrado').length;
+
+  document.getElementById('cnt-aberto').textContent = abertos;
+  document.getElementById('cnt-urgente').textContent = urgentes;
+  document.getElementById('cnt-encerrado').textContent = encerrados;
+  document.getElementById('cnt-total').textContent = EDITAIS.length;
+
+  if (urgentes > 0) document.getElementById('urgente-alert').style.display = 'flex';
+}
+
+updateStats();
+renderGrid();
+</script>
+</body>
+</html>
