@@ -160,7 +160,7 @@
       <p style="margin-top:3px;">Página criada para auxiliar extensionistas e pesquisadores por meio da curadoria de editais abertos.</p>
     </div>
   </div>
-  <div class="update-badge" id="update-badge">&#9201; Atualizado em 08/09/2026</div>
+  <div class="update-badge" id="update-badge">&#9201; Atualizado em 10/09/2026</div>
 </div>
 
 <div class="alert-box" id="urgente-alert" style="display:none">
@@ -178,7 +178,7 @@
   <div id="table-container"></div>
 </div>
 
-<div class="footer-note">Atualizado automaticamente todos os dias às 08h00 · Fontes: CNPq, FINEP, CAPES, MEC, MCTI, Ministério da Saúde, FAPEMAT, BNDES, Petrobras, EMBRAPII, SENAI, Transferegov</div>
+<div class="footer-note">Atualizado automaticamente todos os dias às 08h00 · Fontes: CNPq, FINEP, CAPES, MEC, MCTI, Ministério da Saúde, MMA/Fundo Amazônia, FAPEMAT, CONFAP, BNDES, Petrobras, EMBRAPII, SENAI, Transferegov e financiadores internacionais</div>
 
 <script>
 const EDITAIS = [
@@ -196,28 +196,6 @@ const EDITAIS = [
   {
     status: "aberto",
     urgente: false,
-    orgao: "FINEP",
-    titulo: "Chamada Conjunta FINEP / Conselho Norueguês de Pesquisa (RCN) 2026",
-    elegibilidade: "Instituições de pesquisa e empresas brasileiras em consórcio com organizações norueguesas — UFMT elegível como instituição de pesquisa proponente/co-executora",
-    criterios: "Projetos colaborativos Brasil–Noruega em energia, petróleo offshore e transporte marítimo de baixa emissão; de R$ 1 milhão a R$ 3 milhões por projeto; cadastro prévio encerrado em 02/09, submissões até 09/09/2026",
-    abertura: "2026",
-    encerramento: "09/09/2026",
-    link: "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta"
-  },
-  {
-    status: "aberto",
-    urgente: false,
-    orgao: "BNDES",
-    titulo: "Chamada Pública BNDES Territórios da Restauração – Bacias Resilientes",
-    elegibilidade: "Instituições proponentes de projetos de restauração ecológica, incluindo ICTs e universidades em parceria com organizações executoras (UFMT elegível como proponente ou parceira técnica)",
-    criterios: "Até R$ 120 milhões (R$ 60 milhões do BNDES + contrapartida de parceiros públicos/privados); restauração ecológica e/ou produtiva com vegetação nativa em nascentes, mata ciliar e áreas de recarga hídrica de bacias que abastecem grandes centros urbanos",
-    abertura: "2026",
-    encerramento: "09/09/2026",
-    link: "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/meio-ambiente"
-  },
-  {
-    status: "aberto",
-    urgente: false,
     orgao: "British Council",
     titulo: "Research Challenges Grants 2026",
     elegibilidade: "IES e instituições de pesquisa do Reino Unido em colaboração com instituições do Brasil, Egito, Marrocos e Palestina — UFMT elegível como instituição parceira brasileira",
@@ -225,6 +203,17 @@ const EDITAIS = [
     abertura: "2026",
     encerramento: "17/09/2026",
     link: "https://www.britishcouncil.org/research-challenges-grants"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CAPES",
+    titulo: "PDPG – Formação Profissional de Nutricionistas 2026",
+    elegibilidade: "Programas de pós-graduação de IES brasileiras na área de Nutrição e afins (PPGs da UFMT elegíveis, via PROPG)",
+    criterios: "Programa de Desenvolvimento da Pós-Graduação voltado à qualificação da formação profissional de nutricionistas; concessão de bolsas e fomento; inscrição pela plataforma CAPES até 18/09/2026 às 23h59",
+    abertura: "2026",
+    encerramento: "18/09/2026",
+    link: "https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/programas-estrategicos/formacao-de-recursos-humanos-em-areas-estrategicas/programa-de-desenvolvimento-da-pos-graduacao-pdpg-formacao-profissional-de-nutricionistas"
   },
   {
     status: "aberto",
@@ -291,6 +280,17 @@ const EDITAIS = [
     abertura: "2026",
     encerramento: "21/09/2026",
     link: "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "Wellcome Trust",
+    titulo: "Wellcome Discovery Awards – 2ª rodada 2026",
+    elegibilidade: "Pesquisadores estabelecidos e equipes multidisciplinares vinculados a organizações do Reino Unido, Irlanda e países de baixa e média renda (Brasil incluído; exceto Índia e China continental) — UFMT elegível como instituição sede; verificar enquadramento na lista oficial da Wellcome",
+    criterios: "Média de ~£ 3,5 milhões por projeto (acima de £ 5 milhões exige análise adicional); projetos de até 8 anos em ideias de pesquisa ousadas sobre vida humana, saúde e bem-estar; permite coaplicantes; prazo até 22/09/2026",
+    abertura: "2026",
+    encerramento: "22/09/2026",
+    link: "https://wellcome.org/research-funding/schemes/discovery-awards"
   },
   {
     status: "aberto",
@@ -373,6 +373,17 @@ const EDITAIS = [
     status: "aberto",
     urgente: false,
     orgao: "CAPES",
+    titulo: "PDAI – Programa de Desenvolvimento Acadêmico Indígena (Edital CAPES nº 23/2026)",
+    elegibilidade: "PPGs stricto sensu de IES brasileiras que recebam estudantes indígenas; candidatos indígenas se inscrevem nos PPGs contemplados (PPGs da UFMT elegíveis — forte aderência aos povos indígenas de MT)",
+    criterios: "325 bolsas ao todo (214 de mestrado e 111 de doutorado); ampliação do acesso, permanência e formação de pesquisadores indígenas; distribuição por proporção da população indígena no município, nota do PPG e nº de cursos com temática indígena; inscrições de candidatos de 17/08 a 01/10/2026",
+    abertura: "17/08/2026",
+    encerramento: "01/10/2026",
+    link: "https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/programas-estrategicos/desenvolvimento-regional/programa-de-desenvolvimento-academico-indigena-pdai"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CAPES",
     titulo: "Rede de Pesquisa e Desenvolvimento da Amazônia Legal (Edital CAPES nº 06/2026)",
     elegibilidade: "IES e ICTs dos nove estados da Amazônia Legal, incluindo Mato Grosso — a UFMT é elegível como proponente/instituição integrante da rede estadual (até 6 propostas por estado)",
     criterios: "R$ 115 milhões (CAPES/MEC) para até 36 projetos de 5 anos, com até R$ 3,2 milhões cada; fixação de pesquisadores, novas áreas de pesquisa, internacionalização, interiorização da pós-graduação e valorização de saberes tradicionais; submissão pelo SICAPES até às 17h de 02/10/2026",
@@ -427,6 +438,50 @@ const EDITAIS = [
   {
     status: "aberto",
     urgente: false,
+    orgao: "CONFAP/Biodiversa+",
+    titulo: "Chamada Transnacional Conjunta Biodiversa+ (BiodivFuture) 2026-2027 – Horizon Europe",
+    elegibilidade: "Consórcios internacionais com pesquisadores brasileiros vinculados a ICTs; no Brasil o financiamento é feito pelas FAPs participantes via CONFAP. ATENÇÃO: a FAPEMAT ainda não consta entre as 13 FAPs aderentes — outras fundações podem aderir; verificar com FAPEMAT/CONFAP antes de submeter",
+    criterios: "Tema: “Ecossistemas emergentes: biodiversidade, consequências socioecológicas e trajetórias futuras”, em 3 eixos (funcionamento, trajetórias e benefícios/equidade); pré-propostas até 10/11/2026 ao meio-dia (CEST) e propostas completas até 16/04/2027; plataforma de matchmaking disponível",
+    abertura: "09/09/2026",
+    encerramento: "10/11/2026",
+    link: "https://www.biodiversa.eu/2026/06/09/2026-2027-joint-call/"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CONFAP/Water4All",
+    titulo: "Water4All 2026 – Gestão Sustentável dos Recursos Hídricos (Horizon Europe)",
+    elegibilidade: "Consórcios com no mínimo 3 parceiros de 3 países; pesquisadores brasileiros de ICTs financiados pelas FAPs participantes via CONFAP. ATENÇÃO: a FAPEMAT não consta entre as 16 FAPs aderentes — verificar com FAPEMAT/CONFAP a possibilidade de adesão ou parceria autofinanciada",
+    criterios: "32 organizações de fomento de 30 países; projetos de 36 meses em Gestão Integrada de Recursos Hídricos, bacias hidrográficas, águas subterrâneas, resiliência hídrica e monitoramento/dados; pré-propostas até 10/11/2026 às 15h (CEST); propostas completas até 06/04/2027",
+    abertura: "08/09/2026",
+    encerramento: "10/11/2026",
+    link: "https://www.water4all-partnership.eu/joint-activities/water4all-2026-joint-transnational-call"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Mais Inovação Brasil Rodada 2 – Transformação Mineral (minerais críticos e estratégicos)",
+    elegibilidade: "Empresas do setor mineral de qualquer porte como proponentes, com parceria de ICTs/Universidades em projetos de PD&I (UFMT elegível como parceira institucional)",
+    criterios: "R$ 215 milhões em subvenção econômica (Finep pretende ampliar o montante com o MCTI); cinco linhas temáticas: minerais e materiais críticos e estratégicos para transição energética e descarbonização, mineração urbana, ímãs de terras raras, tecnologias de mineração sustentável e descarbonização da transformação mineral; prazo PRORROGADO para 30/11/2026",
+    abertura: "03/03/2026",
+    encerramento: "30/11/2026",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadapublica/771"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "MMA/BNDES",
+    titulo: "Prospera Amazônia – Núcleos de Desenvolvimento da Sociobioeconomia (Chamamento Público MMA nº 2/2026)",
+    elegibilidade: "Redes multi-institucionais de no mínimo 5 organizações; a organização-líder deve ser OSC/OSCIP ou cooperativa — a UFMT é elegível como organização PARCEIRA da rede (não como líder), aportando capacidade técnica e científica",
+    criterios: "Entre R$ 185 milhões e R$ 230 milhões do Fundo Amazônia; implantação de Núcleos em 9 Territórios da Sociobioeconomia nos 9 estados da Amazônia Legal (MT incluído), em até 106 municípios, apoiando ao menos 180 negócios comunitários; candidaturas pela plataforma Transferegov até 01/12/2026 às 23h59",
+    abertura: "2026",
+    encerramento: "01/12/2026",
+    link: "https://www.gov.br/mma/pt-br/composicao/sbc/dpeb/programa-nacional-de-sociobioeconomia-prospera/Editais"
+  },
+  {
+    status: "aberto",
+    urgente: false,
     orgao: "CNPq",
     titulo: "MAI/DAI – Mestrado e Doutorado Acadêmico para Inovação (Chamada CNPq/CAPES nº 30/2026)",
     elegibilidade: "IES com programas de pós-graduação em parceria com empresas; submissão institucional (UFMT elegível como proponente, via PROPG)",
@@ -456,6 +511,17 @@ const EDITAIS = [
     abertura: "03/09/2026",
     encerramento: "31/03/2027",
     link: "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-32-2026/chamada-publica-cnpq-N-32-2026"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "CAPES",
+    titulo: "Programa CAPES/AUGM (Edital nº 17/2026) – Chamada 02, ciclo 2027/2028",
+    elegibilidade: "PPGs de IES brasileiras associadas à AUGM (Associação de Universidades Grupo Montevidéu), em parceria com universidades membros no exterior — verificar filiação e trâmite institucional junto à Secretaria de Relações Internacionais da UFMT",
+    criterios: "Até 15 projetos conjuntos por chamada; projetos de até 4 anos com início em 2028 e avaliação intermediária no 2º ano; mobilidade de docentes, pós-doutorandos e doutorandos; a Chamada 01 (2026/2027) encerrou em 02/07/2026 — a Chamada 02 recebe propostas até 01/07/2027",
+    abertura: "2027",
+    encerramento: "01/07/2027",
+    link: "https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-e-auxilios-internacionais/encontre-aqui/paises/multinacional/programa-capes-augm"
   },
   {
     status: "aberto",
@@ -599,6 +665,72 @@ const EDITAIS = [
     abertura: "02/07/2026",
     encerramento: "Em aberto (verificar Min. Saúde)",
     link: "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-03-2026-desid-fiis-saude"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "Min. Saúde",
+    titulo: "Programa de Aperfeiçoamento de Preceptores para Integração Ensino-Serviço (Chamamento SGTES/MS nº 34/2026)",
+    elegibilidade: "Instituições de ensino superior, serviços de saúde e gestores do SUS que aderem ao programa (UFMT elegível como IES parceira/executora, via Faculdade de Medicina, ICS e HUJM)",
+    criterios: "Adesão institucional ao programa nacional de aperfeiçoamento de preceptores para integração ensino-serviço nos territórios de saúde; verificar vagas, requisitos e cronograma no edital do Ministério da Saúde",
+    abertura: "17/06/2026",
+    encerramento: "Em aberto (verificar Min. Saúde)",
+    link: "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-34-2026-sgtes"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "Global Innovation Fund",
+    titulo: "Global Innovation Fund – Chamada Permanente para Soluções Inovadoras de Desenvolvimento",
+    elegibilidade: "Organizações de qualquer natureza, incluindo universidades e institutos de pesquisa, com soluções inovadoras voltadas a populações vulneráveis (UFMT elegível como proponente)",
+    criterios: "Financiamento de € 30 mil a € 10 milhões, escalonado por estágio de maturidade da solução; temas: meio ambiente, assistência social, cultura e arte, desenvolvimento comunitário, entre outros; submissão em fluxo contínuo",
+    abertura: "Fluxo contínuo",
+    encerramento: "Em aberto (verificar GIF)",
+    link: "https://www.globalinnovation.fund/"
+  },
+  {
+    status: "aberto",
+    urgente: false,
+    orgao: "FID",
+    titulo: "Fund for Innovation in Development (FID) – Chamada Permanente",
+    elegibilidade: "Inovadores e pesquisadores de todo o mundo, incluindo universidades e ICTs (UFMT elegível como instituição proponente ou de vínculo)",
+    criterios: "Financiamento flexível por estágios para testar novas ideias, construir evidências rigorosas e escalar soluções custo-efetivas; ênfase em educação, saúde, mudanças climáticas e igualdade de gênero; submissão em fluxo contínuo",
+    abertura: "Fluxo contínuo",
+    encerramento: "Em aberto (verificar FID)",
+    link: "https://www.fondationinnovationdeveloppement.org/en/"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "BNDES/CONFAP",
+    titulo: "Programa Desafios da Amazônia – 1ª Chamada (Amazônia+10 / Fundo Amazônia / CONFAP)",
+    elegibilidade: "Redes de Pesquisa e Inovação formadas por ICTs e Organizações Socioprodutivas da Amazônia Legal, podendo incluir órgãos públicos e ONGs — UFMT elegível como ICT integrante ou coordenadora de rede (MT é estado da Amazônia Legal)",
+    criterios: "R$ 107,1 milhões (R$ 72 mi do Fundo Amazônia + R$ 35 mi de contrapartida das FAPs); 9 a 12 projetos de até 36 meses, de R$ 6 mi a R$ 8 mi cada (até R$ 10 mi com contrapartida da FAP); cadeias do açaí, castanha, cacau, babaçu e recursos pesqueiros; pré-propostas encerradas em 01/09/2026 — propostas finais dos habilitados até 08/12/2026",
+    abertura: "01/07/2026",
+    encerramento: "01/09/2026",
+    link: "https://www.fundoamazonia.gov.br/pt/como-apresentar-projetos/chamadas-publicas/programa-desafios-da-amazonia/"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "FINEP",
+    titulo: "Chamada Conjunta FINEP / Conselho Norueguês de Pesquisa (RCN) 2026",
+    elegibilidade: "Instituições de pesquisa e empresas brasileiras em consórcio com organizações norueguesas — UFMT elegível como instituição de pesquisa proponente/co-executora",
+    criterios: "Projetos colaborativos Brasil–Noruega em energia, petróleo offshore e transporte marítimo de baixa emissão; de R$ 1 milhão a R$ 3 milhões por projeto; cadastro prévio encerrado em 02/09 e submissões encerradas em 09/09/2026",
+    abertura: "2026",
+    encerramento: "09/09/2026",
+    link: "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta"
+  },
+  {
+    status: "encerrado",
+    urgente: false,
+    orgao: "BNDES",
+    titulo: "Chamada Pública BNDES Territórios da Restauração – Bacias Resilientes",
+    elegibilidade: "Instituições proponentes de projetos de restauração ecológica, incluindo ICTs e universidades em parceria com organizações executoras (UFMT elegível como proponente ou parceira técnica)",
+    criterios: "Até R$ 120 milhões (R$ 60 milhões do BNDES + contrapartida de parceiros públicos/privados); restauração ecológica e/ou produtiva com vegetação nativa em nascentes, mata ciliar e áreas de recarga hídrica de bacias que abastecem grandes centros urbanos; encerrado em 09/09/2026 às 17h",
+    abertura: "2026",
+    encerramento: "09/09/2026",
+    link: "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/meio-ambiente"
   },
   {
     status: "encerrado",
