@@ -1194,5 +1194,81 @@ function updateStats() {
 updateStats();
 renderGrid();
 </script>
+<style id="responsivo-css">
+  .ed-det summary { cursor: pointer; color: #4338ca; font-size: 0.75rem; margin-top: 6px; list-style: revert; }
+  .ed-det p { margin-top: 6px; font-size: 0.78rem; color: #374151; line-height: 1.4; }
+  .ed-org { display: block; font-size: 0.72rem; color: #6b7280; font-weight: 600; margin-bottom: 2px; }
+  .ed-tit { font-weight: 600; color: #1a1d23; }
+  @media (max-width: 999px) {
+    body { padding: 12px; }
+    .header-left h1 { font-size: 1.15rem; }
+    .stat-card { padding: 10px 12px; min-width: 110px; }
+    .stat-card .value { font-size: 1.35rem; }
+    .gridjs-td { padding: 8px 8px !important; font-size: 0.8rem !important; }
+    .gridjs-th { padding: 8px 8px !important; font-size: 0.7rem !important; }
+    .gridjs-wrapper { overflow-x: hidden !important; }
+    .link-btn { padding: 3px 8px; white-space: nowrap; }
+  }
+  @media (max-width: 599px) {
+    .badge { font-size: 0.58rem; padding: 2px 5px; letter-spacing: 0; }
+    .link-btn { padding: 3px 6px; font-size: 0.7rem; }
+    .gridjs-td { padding: 7px 5px !important; }
+  }
+</style>
+<script>
+// RESPONSIVO-COMPACTO: em telas/quadros estreitos (< 1000px) mostra so as colunas essenciais;
+// elegibilidade, criterios e abertura ficam dentro de "Ver detalhes".
+(function () {
+  var BP = 1000;
+  var original = window.renderGrid;
+  function esc(t) {
+    return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function badge(e) {
+    if (e.status !== 'aberto') return '<span class="badge badge-encerrado">Encerrado</span>';
+    return isUrgente(e) ? '<span class="badge badge-urgente">⚠ Urgente</span>' : '<span class="badge badge-aberto">✓ Aberto</span>';
+  }
+  function compacto() {
+    var data = getFiltered();
+    var container = document.getElementById('table-container');
+    container.innerHTML = '';
+    window._grid = null;
+    var mini = window.innerWidth < 600;
+    var cols = mini
+      ? [{ name: 'Status', width: '24%' }, { name: 'Edital', width: '43%' }, { name: 'Prazo', width: '18%' }, { name: '', width: '15%' }]
+      : [{ name: 'Status', width: '15%' }, { name: 'Órgão', width: '12%' }, { name: 'Edital / Título', width: '45%' }, { name: 'Encerramento', width: '15%' }, { name: 'Acesso', width: '13%' }];
+    window._grid = new gridjs.Grid({
+      columns: cols,
+      data: data.map(function (e) {
+        var det = '<details class="ed-det"><summary>Ver elegibilidade e critérios</summary>' +
+          '<p><strong>Elegibilidade UFMT:</strong> ' + esc(e.elegibilidade) + '</p>' +
+          '<p><strong>Critérios principais:</strong> ' + esc(e.criterios) + '</p>' +
+          '<p><strong>Abertura:</strong> ' + esc(e.abertura) + '</p></details>';
+        var tit = (mini ? '<span class="ed-org">' + esc(e.orgao) + '</span>' : '') + '<span class="ed-tit">' + esc(e.titulo) + '</span>' + det;
+        var acesso = gridjs.html('<a href="' + esc(e.link) + '" target="_blank" rel="noopener" class="link-btn">' + (mini ? 'Abrir' : 'Acessar →') + '</a>');
+        return mini
+          ? [gridjs.html(badge(e)), gridjs.html(tit), e.encerramento, acesso]
+          : [gridjs.html(badge(e)), e.orgao, gridjs.html(tit), e.encerramento, acesso];
+      }),
+      sort: false,
+      style: {
+        table: { 'border-collapse': 'collapse', width: '100%', 'table-layout': 'fixed' },
+        th: { 'border-bottom': '2px solid #e5e7eb' },
+        td: { 'border-bottom': '1px solid #f3f4f6', 'word-wrap': 'break-word' }
+      }
+    }).render(container);
+  }
+  function modo() { return window.innerWidth < BP ? (window.innerWidth < 600 ? 'mini' : 'compacto') : 'completo'; }
+  window.renderGrid = function () { window._grid = null; var o = document.getElementById('table-container'); var n = o.cloneNode(false); o.parentNode.replaceChild(n, o); return modo() === 'completo' ? original() : compacto(); };
+  var atual = modo();
+  if (atual !== 'completo') window.renderGrid();
+  var t;
+  window.addEventListener('resize', function () {
+    clearTimeout(t);
+    t = setTimeout(function () { var m = modo(); if (m !== atual) { atual = m; window.renderGrid(); } }, 200);
+  });
+})();
+</script>
+
 </body>
 </html>
