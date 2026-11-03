@@ -52,6 +52,11 @@
     font-weight: 500;
     white-space: nowrap;
   }
+  .update-badge-velho {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #fbbf24;
+  }
   .filters {
     display: flex;
     gap: 10px;
@@ -160,7 +165,7 @@
       <p style="margin-top:3px;">Página criada para auxiliar extensionistas e pesquisadores por meio da curadoria de editais abertos.</p>
     </div>
   </div>
-  <div class="update-badge" id="update-badge">&#9201; Atualizado em 14/10/2026</div>
+  <div class="update-badge" id="update-badge">&#9201; Atualizado em 26/10/2026 às 20:25</div>
 </div>
 
 <div class="alert-box" id="urgente-alert" style="display:none">
@@ -181,6 +186,13 @@
 <div class="footer-note">Atualizado automaticamente todos os dias às 08h00 · Fontes: CNPq, FINEP, CAPES, MEC, MCTI, Ministério da Saúde, MMA/Fundo Amazônia, FAPEMAT, CONFAP, BNDES, Petrobras, EMBRAPII, SENAI, Transferegov e financiadores internacionais</div>
 
 <script>
+// ============================================================
+// CARIMBO DA VARREDURA — a tarefa diária deve reescrever estas
+// duas linhas a cada execução, com a data/hora REAL da varredura.
+// iso: "AAAA-MM-DD"   rotulo: texto exibido no selo da página.
+// ============================================================
+const ULTIMA_ATUALIZACAO = { iso: "2026-10-26", rotulo: "26/10/2026 às 20:25" };
+
 const EDITAIS = [
     {
         "status":  "encerrado",
@@ -309,9 +321,9 @@ const EDITAIS = [
         "orgao":  "CAPES",
         "titulo":  "PDAI – Programa de Desenvolvimento Acadêmico Indígena (Edital CAPES nº 23/2026)",
         "elegibilidade":  "PPGs stricto sensu de IES brasileiras que recebam estudantes indígenas; candidatos indígenas se inscrevem nos PPGs contemplados (PPGs da UFMT elegíveis — forte aderência aos povos indígenas de MT)",
-        "criterios":  "325 bolsas ao todo (214 de mestrado e 111 de doutorado); ampliação do acesso, permanência e formação de pesquisadores indígenas; distribuição por proporção da população indígena no município, nota do PPG e nº de cursos com temática indígena; inscrições de candidatos de 17/08 a 01/10/2026, PRORROGADAS até 26/10/2026 (23h59) e encerradas",
+        "criterios":  "325 bolsas ao todo (214 de mestrado e 111 de doutorado); ampliação do acesso, permanência e formação de pesquisadores indígenas; distribuição por proporção da população indígena no município, nota do PPG e nº de cursos com temática indígena; inscrições de candidatos de 17/08 a 01/10/2026",
         "abertura":  "17/08/2026",
-        "encerramento":  "26/10/2026",
+        "encerramento":  "01/10/2026",
         "link":  "https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/programas-estrategicos/desenvolvimento-regional/programa-de-desenvolvimento-academico-indigena-pdai"
     },
     {
@@ -412,17 +424,6 @@ const EDITAIS = [
         "abertura":  "01/10/2026",
         "encerramento":  "03/11/2026",
         "link":  "https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-e-auxilios-internacionais/encontre-aqui/paises/multinacional/programa-de-doutorado-sanduiche-no-exterior-pdse"
-    },
-    {
-        "status":  "aberto",
-        "urgente":  false,
-        "orgao":  "MinC/MEC",
-        "titulo":  "Programa Ciclos de Saberes com Mestras e Mestres das Culturas Tradicionais e Populares e das Artes (Edital MinC/MEC nº 13/2026)",
-        "elegibilidade":  "Exclusivo para Instituições Federais de Ensino Superior (IFES), uma proposta por instituição com plano de trabalho — UFMT elegível como proponente direta (via PROEC/pró-reitoria de cultura e extensão); parceria obrigatória com mestres(as) das culturas tradicionais (individualmente ou via associações, coletivos, Pontos de Cultura) e com secretarias de Educação/escolas públicas de educação básica. Fundamento: objeto e item de proponentes do edital (chamada pública para seleção de projetos de IFES). Execução pela Fundação Uniselva não prevista expressamente — verificar no edital",
-        "criterios":  "R$ 5 milhões no total; Categoria A (grande porte): até 7 propostas de até R$ 500 mil (mín. 10 mestres, 3 municípios e 5 escolas públicas); Categoria B (contexto local): até 6 propostas de até R$ 250 mil (mín. 5 mestres, 1 município e 3 escolas); mínimo de 40% do valor para remuneração dos mestres; três eixos obrigatórios: atividades dos mestres na universidade, ações nos territórios e atividades em escolas de educação básica; execução em até 12 meses; inscrições pelo Mapa da Cultura (oportunidade 12667) de 19/10 a 08/11/2026",
-        "abertura":  "19/10/2026",
-        "encerramento":  "08/11/2026",
-        "link":  "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/programa-ciclo-de-saberes-com-mestras-e-mestres-das-culturas-tradicionais-e-populares-e-das-artes/edital-minc-mec-no-13-sei_3193023"
     },
     {
         "status":  "aberto",
@@ -667,14 +668,14 @@ const EDITAIS = [
         "link":  "https://embrapii.org.br/"
     },
     {
-        "status":  "encerrado",
+        "status":  "aberto",
         "urgente":  false,
         "orgao":  "CAPES",
-        "titulo":  "PAEP – Programa de Apoio a Eventos no País (Edital CAPES nº 25/2026 – eventos de 2027)",
+        "titulo":  "PAEP – Programa de Apoio a Eventos no País",
         "elegibilidade":  "IES e ICTs brasileiras que promovam eventos científicos; solicitação institucional pelo PPG/pró-reitoria (UFMT elegível como proponente, via PROPG)",
-        "criterios":  "Auxílio financeiro para realização de congressos, simpósios, seminários e workshops científicos no Brasil em 2027; proponente docente/pesquisador vinculado a PPG recomendado pela CAPES, com envolvimento direto de ao menos três PPGs; inscrições de 07/09 a 20/10/2026 (17h) pelo sistema inscricao.capes.gov.br — ENCERRADO; resultado final previsto para 08/01/2027",
-        "abertura":  "07/09/2026",
-        "encerramento":  "20/10/2026",
+        "criterios":  "Auxílio financeiro para realização de congressos, simpósios, seminários e workshops científicos no Brasil, com apoio a passagens, diárias e despesas de organização; MUDANÇA DE STATUS em 21/09/2026: voltou a constar entre os Editais Abertos da CAPES — confirmar cronograma da nova rodada no portal",
+        "abertura":  "2026",
+        "encerramento":  "Em aberto (verificar CAPES)",
         "link":  "https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/paep"
     },
     {
@@ -1008,23 +1009,12 @@ const EDITAIS = [
         "link":  "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta"
     },
     {
-        "status":  "encerrado",
-        "urgente":  false,
-        "orgao":  "CNPq",
-        "titulo":  "Popularização da Ciência nas Unidades da Federação (Chamamento CNPq/FNDCT/MCTI nº 01/2026)",
-        "elegibilidade":  "Proponentes são as FAPs estaduais (FAPEMAT em MT); a UFMT participaria como instituição parceira/executora das ações estaduais",
-        "criterios":  "Criar, fortalecer e expandir iniciativas e equipamentos de popularização da ciência nos estados; recursos federais com contrapartida estadual; capilaridade e interiorização; encerrado em 17/08/2026",
-        "abertura":  "02/07/2026",
-        "encerramento":  "17/08/2026",
-        "link":  "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamamento-no-01-2026/chamamento-publico-01-2026"
-    },
-    {
         "status":  "aberto",
         "urgente":  false,
         "orgao":  "CNPq",
         "titulo":  "Bolsas de Produtividade em Pesquisa e Desenvolvimento Tecnológico (DT, PQ e PQSr) – Chamada CNPq nº 33/2026",
         "elegibilidade":  "Pesquisadores doutores com vínculo institucional (docentes da UFMT) — submissão individual via Plataforma Carlos Chagas, com vínculo e anuência da instituição; UFMT participa como instituição de vínculo",
-        "criterios":  "Bolsas de produtividade em pesquisa (PQ, PQSr) e desenvolvimento tecnológico e extensão inovadora (DT); avaliação por comitês de assessoramento; verificar requisitos no texto da chamada | RETIFICAÇÃO: Errata nº 1 (13/10/2026) alterou o critério de julgamento do CA-DT — usar o Anexo I atualizado (verificado em 26/10/2026)",
+        "criterios":  "Bolsas de produtividade em pesquisa (PQ, PQSr) e desenvolvimento tecnológico e extensão inovadora (DT); avaliação por comitês de assessoramento; verificar requisitos no texto da chamada",
         "abertura":  "07/10/2026",
         "encerramento":  "07/01/2027",
         "link":  "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-33-2026/chamada-publica-cnpq-N-33-2026"
@@ -1055,45 +1045,34 @@ const EDITAIS = [
         "status":  "aberto",
         "urgente":  false,
         "orgao":  "FINEP",
-        "titulo":  "COOPERAMAIS Tecnologia – ICT (Chamada Pública MCTI/FINEP/FNDCT – CT-Agro) – Soluções Tecnológicas para a Agricultura Familiar",
-        "elegibilidade":  "ICTs públicas e privadas com experiência comprovada em PD\u0026I, extensão, transferência de tecnologia ou capacitação voltadas à agricultura familiar/PNRA — UFMT elegível como ICT executora principal (1 proposta por ICT; pode ser coexecutora em outras). ELEGIBILIDADE A CONFIRMAR quanto à Uniselva: a página oficial da Finep não traz item sobre fundação de apoio e o texto do edital não estava disponível para consulta; chamadas internas de outras IFES (ex.: UFSM, item 1.5) indicam a fundação de apoio como proponente e a ICT federal como executora — confirmar no edital/anexos antes de submeter",
-        "criterios":  "NOVO em 26/10/2026. R$ 100 milhões não reembolsáveis (FNDCT/CT-Agro); R$ 3 milhões a R$ 15 milhões por projeto, execução até 36 meses; mínimo de 30% para Norte, Nordeste e Centro-Oeste. Linhas: comercialização e logística cooperativa; cadeias produtivas e agroindustrialização; gestão da inovação e transformação digital; eficiência energética e resiliência climática. Exige parceria formal prévia com ao menos uma cooperativa da agricultura familiar (≥1 ano de constituição, CAF ativo e ≥70% dos cooperados com CAF PF ativo) e tecnologia a partir de TRL 3. Contrapartida financeira prevista (percentual a confirmar no edital). UFMT precisa de seleção interna (1 proposta por ICT) — acionar PROPEQ/NIT. Envio pelo SISGON até 08/12/2026 às 18h (página Finep; fuso não informado — Brasília). Dúvidas: cp_cooperamaisict@finep.gov.br",
-        "abertura":  "22/09/2026",
+        "titulo":  "Finep Cooperamais Tecnologia (ICT) – Pesquisa e Inovação para a Agricultura Familiar (Finep/MDA)",
+        "elegibilidade":  "ICTs públicas e privadas sem fins lucrativos (universidades e institutos científicos); a UFMT é elegível como instituição executora principal, com proposta institucional única — exige parceria formal com ao menos uma cooperativa de agricultura familiar (vínculo há ≥ 1 ano, CAF-PJ ativo e ≥ 70% dos associados com CAF-PF). Seleção interna via PRPI/PROPG; verificar chamada interna da UFMT",
+        "criterios":  "NOVO em 26/10/2026. R$ 100 milhões não reembolsáveis (parte de pacote de R$ 220 milhões Finep/MDA; a linha para empresas segue em fluxo contínuo até 30/04/2027); propostas de R$ 3 a 15 milhões, execução de até 36 meses, pesquisa aplicada a partir de TRL 3; cinco linhas: comercialização e logística de cooperativas, cadeias produtivas e agroindustrialização, gestão da inovação e transformação digital, economia circular, eficiência energética e resiliência climática",
+        "abertura":  "2026",
         "encerramento":  "08/12/2026",
-        "link":  "https://www.finep.gov.br/e/chamada-publica/222684/1060260"
+        "link":  "https://www.finep.gov.br/e/chamadapublica/222684/1060260"
     },
     {
         "status":  "aberto",
         "urgente":  false,
         "orgao":  "CNPq",
         "titulo":  "Auxílio à Promoção de Eventos Científicos, Tecnológicos e/ou de Inovação – ARC (Chamada CNPq nº 34/2026)",
-        "elegibilidade":  "Proponente: pesquisador doutor, coordenador do projeto e membro da comissão organizadora, com vínculo formal com a instituição executora (item 3.2.1). Instituição executora: ICT, empresa pública ou OSC sem fins lucrativos cadastrada no Diretório de Instituições do CNPq (item 3.3.1) — UFMT elegível como instituição executora por meio de docentes doutores. Participação da Uniselva não prevista expressamente; taxas de administração/gerência são vedadas (item 5.3)",
-        "criterios":  "NOVO em 26/10/2026. Valor global R$ 20 milhões (item 4.1). Linha 1 (eventos mundiais) e Linha 2 (eventos tradicionais): até R$ 200 mil; Linha 3 (eventos não tradicionais): até R$ 150 mil; 1 proposta por proponente (itens 4.5 e 6.8). Eventos de grande porte realizados no Brasil. Apenas custeio (passagens/diárias de conferencistas, auxílio a estudantes até 15% com contrapartida equivalente, mídia/anais, traslado, locação de espaços e infraestrutura, plataformas virtuais). Contas de rotina são contrapartida obrigatória da instituição. Vedados: alimentação, coquetel, certificados, shows, taxas de administração, veículos/combustíveis e pagamento a servidores. Submissão até 04/12/2026 às 23h59 (Brasília) (item 6.2)",
+        "elegibilidade":  "Pesquisadores e instituições promotoras de eventos científicos no Brasil; docentes/pesquisadores da UFMT com vínculo institucional podem submeter pela Plataforma Integrada Carlos Chagas — verificar requisitos de elegibilidade no texto da chamada",
+        "criterios":  "NOVO em 26/10/2026. Apoio financeiro à realização de eventos de ciência, tecnologia e inovação no país; valores, modalidades e requisitos conforme o texto da chamada",
         "abertura":  "14/10/2026",
         "encerramento":  "04/12/2026",
         "link":  "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-34-2026/chamada-publica-cnpq-N-34-2026"
     },
     {
-        "status":  "aberto",
+        "status":  "encerrado",
         "urgente":  false,
-        "orgao":  "FINEP",
-        "titulo":  "Programa de Cooperação para Inovação da Rede EUREKA – Tecnologias para Prevenção, Resposta e Recuperação de Desastres (fase nacional)",
-        "elegibilidade":  "ELEGIBILIDADE A CONFIRMAR: os recursos Finep destinam-se a EMPRESAS brasileiras em consórcio internacional com Selo EUREKA; ICTs participam apenas como prestadoras de serviços de pesquisa/extensão às empresas, não como beneficiárias diretas — UFMT pode atuar como parceira contratada por empresa proponente; participação da Uniselva não prevista; confirmar condições no edital",
-        "criterios":  "NOVO em 26/10/2026. Até R$ 7 milhões não reembolsáveis (Finep/MCTI); projetos de até 36 meses; exige consórcio com parceiro de ao menos outro país membro da EUREKA e obtenção do Selo EUREKA na etapa internacional. Interesse para grupos da UFMT em monitoramento ambiental, queimadas, secas e eventos extremos que tenham empresas parceiras. Prazo pelo Portal Finep: 06/10 a 06/11/2026, às 17h (Brasília)",
-        "abertura":  "06/10/2026",
-        "encerramento":  "06/11/2026",
-        "link":  "https://www.finep.gov.br/e/chamada-publica/222684/1075469"
-    },
-    {
-        "status":  "aberto",
-        "urgente":  false,
-        "orgao":  "CNPq/Petrobras",
-        "titulo":  "Projeto InspirAÇÃO – Jovens Mulheres Negras na Indústria de Energia (Chamada Pública CNPq/Petrobras nº 31/2026)",
-        "elegibilidade":  "UFMT elegível como instituição de execução: a chamada admite ICT e/ou IES constituída sob as leis brasileiras, cadastrada no Diretório de Instituições do CNPq, que desenvolva pesquisa e mantenha política de apoio ao extensionismo (item 4.3.1 e 4.3.3); proponente deve ser o(a) Pró-Reitor(a) de Extensão ou indicado(a) pela PROEC via Anexo II (item 4.2.1). Participação da Uniselva não prevista no texto. ATENÇÃO: atuação restrita a escolas públicas nos territórios de atuação da Petrobras (Anexo III) — confirmar se há município de MT listado",
-        "criterios":  "NOVO em 28/10/2026. R$ 30,24 milhões em bolsas (Petrobras/Cenpes) para estudantes negras do ensino médio público, com parceria obrigatória com escolas públicas (itens 4.3.4 a 4.3.6 e 4.4); bônus de 1,0 ponto só para instituições do Norte/Nordeste (item 8.1.1.6). Ciclos de bolsas a partir de 03/2027. Submissão até 08/12/2026, 23h59 (Brasília) (item 7.2); resultado final previsto para fev/2027",
-        "abertura":  "26/10/2026",
-        "encerramento":  "08/12/2026",
-        "link":  "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-31-2026/chamada-publica-cnpq-N-31-2026"
+        "orgao":  "MEC/MinC",
+        "titulo":  "Ciclos de Saberes de Mestras e Mestres das Culturas Tradicionais e Populares e das Artes (Edital MEC/MinC)",
+        "elegibilidade":  "Exclusivo para Instituições Federais de Ensino Superior (Ifes), com uma proposta por instituição — a UFMT é elegível como proponente; exige parceria com mestres/coletivos/Pontos de Cultura e participação de secretarias de Educação ou escolas públicas de educação básica",
+        "criterios":  "NOVO em 26/10/2026 (já encerrado). R$ 5 milhões no total; Categoria A até R$ 500 mil (7 projetos; ≥ 10 mestres, 3 municípios, 5 escolas) e Categoria B até R$ 250 mil (6 projetos; ≥ 5 mestres, 1 município, 3 escolas); ≥ 40% do valor destinado ao pagamento dos mestres; execução em até 12 meses; inscrições de 30/09 a 24/10/2026 às 23h59 — verificar eventual prorrogação no portal do MEC/MinC",
+        "abertura":  "30/09/2026",
+        "encerramento":  "24/10/2026",
+        "link":  "https://agoralitoral.com.br/2026/09/29/mec-e-minc-lancam-edital-para-integrar-saberes-tradicionais-as-universidades/"
     }
 ];
 // ORDENACAO-ABERTOS-PRIMEIRO: abertos primeiro (prazo mais proximo antes; sem prazo definido por ultimo); encerrados depois (mais recentes primeiro)
@@ -1197,9 +1176,20 @@ function renderGrid() {
 }
 
 function updateStats() {
-  const hoje = new Date();
-  document.getElementById('update-badge').textContent =
-    '🕐 Atualizado em ' + hoje.toLocaleDateString('pt-BR') + ' às ' + hoje.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+  // O selo mostra o carimbo REAL da varredura (constante ULTIMA_ATUALIZACAO,
+  // gravada na geração do arquivo) — nunca o relógio de quem visita a página.
+  const badge = document.getElementById('update-badge');
+  badge.textContent = '🕐 Atualizado em ' + ULTIMA_ATUALIZACAO.rotulo;
+
+  // Se os dados estiverem velhos, o selo avisa em vez de fingir frescor.
+  const p = ULTIMA_ATUALIZACAO.iso.split('-');
+  const carimbo = new Date(+p[0], +p[1] - 1, +p[2]);
+  const diasParados = Math.floor((new Date().setHours(0,0,0,0) - carimbo) / 86400000);
+  if (diasParados >= 2) {
+    badge.classList.add('update-badge-velho');
+    badge.textContent += ' · há ' + diasParados + ' dias';
+    badge.title = 'A varredura diária não é executada desde ' + ULTIMA_ATUALIZACAO.rotulo;
+  }
 
   const abertos = EDITAIS.filter(e => e.status === 'aberto').length;
   const urgentes = EDITAIS.filter(e => isUrgente(e)).length;
